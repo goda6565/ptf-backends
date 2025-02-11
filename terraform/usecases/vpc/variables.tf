@@ -1,8 +1,3 @@
-variable "stage" {
-  type        = string
-  description = "The stage of the environment"
-}
-
 variable "vpc_cidr" {
   type        = string
   description = "The CIDR block for the VPC"

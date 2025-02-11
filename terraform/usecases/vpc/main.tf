@@ -4,7 +4,7 @@ module "vpc" {
   source  = "terraform-aws-modules/vpc/aws"
   version = "5.18.1"
 
-  name = "${var.stage}-ptf-backend-vpc"
+  name = "ptf-backend-vpc"
   cidr = var.vpc_cidr
 
   azs = slice(data.aws_availability_zones.current.names, 0, 2)
