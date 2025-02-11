@@ -44,6 +44,9 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+      - name: Change Directory to Terraform
+        run: cd terraform
+
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
