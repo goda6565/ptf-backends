@@ -4,3 +4,8 @@ module "vpc" {
   enable_nat_gateway     = true
   one_nat_gateway_per_az = false
 }
+
+module "ecr" {
+  source   = "./modules/ecr"
+  app_name = "ptf-golang-app"
+}
