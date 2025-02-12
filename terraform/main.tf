@@ -1,4 +1,9 @@
+locals {
+  app_name = "ptf-golang-app"
+}
+
 module "vpc" {
+  app_name               = local.app_name
   source                 = "./usecases/vpc"
   vpc_cidr               = "10.0.0.0/16"
   enable_nat_gateway     = true
@@ -7,5 +12,19 @@ module "vpc" {
 
 module "ecr" {
   source   = "./modules/ecr"
-  app_name = "ptf-golang-app"
+  app_name = local.app_name
+}
+
+module "ssm_parameters" {
+  source   = "./modules/ssm"
+  app_name = local.app_name
+  secrets = [
+    "TEST_SECRET",
+  ]
+}
+
+module "ecs" {
+  source     = "./usecases/ecs"
+  app_name   = local.app_name
+  depends_on = [module.vpc, module.ecr, module.ssm_parameters]
 }
