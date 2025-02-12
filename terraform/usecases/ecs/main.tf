@@ -4,16 +4,24 @@ locals {
 }
 
 data "aws_vpc" "this" {
-  id = module.vpc.vpc_id
+  filter {
+    name   = "tag:Name"
+    values = [local.vpc_name]
+  }
 }
 
-
 data "aws_subnets" "public" {
-  id = module.vpc.public_subnets
+  filter {
+    name   = "tag:Name"
+    values = ["${var.app_name}-public-*"]
+  }
 }
 
 data "aws_subnets" "private" {
-  id = module.vpc.private_subnets
+  filter {
+    name   = "tag:Name"
+    values = ["${var.app_name}-private-*"]
+  }
 }
 
 

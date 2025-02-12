@@ -24,6 +24,7 @@ module "ssm_parameters" {
 }
 
 module "ecs" {
-  source   = "./usecases/ecs"
-  app_name = local.app_name
+  source     = "./usecases/ecs"
+  app_name   = local.app_name
+  depends_on = [module.vpc, module.ecr, module.ssm_parameters]
 }
