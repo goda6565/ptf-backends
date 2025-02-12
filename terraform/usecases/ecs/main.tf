@@ -4,24 +4,16 @@ locals {
 }
 
 data "aws_vpc" "this" {
-  filter {
-    name   = "tag:Name"
-    values = [local.vpc_name]
-  }
+  id = module.vpc.vpc_id
 }
 
+
 data "aws_subnets" "public" {
-  filter {
-    name   = "tag:Name"
-    values = ["${var.app_name}-public-*"]
-  }
+  id = module.vpc.public_subnets
 }
 
 data "aws_subnets" "private" {
-  filter {
-    name   = "tag:Name"
-    values = ["${var.app_name}-private-*"]
-  }
+  id = module.vpc.private_subnets
 }
 
 
@@ -242,7 +234,7 @@ resource "aws_iam_role_policy" "ecs_task_inline_policy" {
 
 # ECSタスク定義を作成
 data "aws_ecr_repository" "ecr_repository" {
-  name = var.app_name
+  name = "${var.app_name}-ecr-repository"
 }
 
 resource "aws_cloudwatch_log_group" "ecs_log_group" {
