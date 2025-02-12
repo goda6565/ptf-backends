@@ -11,17 +11,11 @@ data "aws_vpc" "this" {
 }
 
 data "aws_subnets" "public" {
-  filter {
-    name   = "tag:Name"
-    values = ["${var.app_name}-public-*"]
-  }
+  id = var.public_subnets
 }
 
 data "aws_subnets" "private" {
-  filter {
-    name   = "tag:Name"
-    values = ["${var.app_name}-private-*"]
-  }
+  id = var.private_subnets
 }
 
 

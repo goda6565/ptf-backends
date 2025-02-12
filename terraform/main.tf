@@ -24,7 +24,9 @@ module "ssm_parameters" {
 }
 
 module "ecs" {
-  source     = "./usecases/ecs"
-  app_name   = local.app_name
-  depends_on = [module.vpc, module.ecr, module.ssm_parameters]
+  source          = "./usecases/ecs"
+  app_name        = local.app_name
+  public_subnets  = module.vpc.public_subnets
+  private_subnets = module.vpc.private_subnets
+  depends_on      = [module.ecr, module.ssm_parameters]
 }
