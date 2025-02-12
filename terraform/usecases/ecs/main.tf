@@ -285,7 +285,7 @@ resource "aws_ecs_service" "ecs_service" {
   name                              = "${var.app_name}-ecs-service"
   cluster                           = aws_ecs_cluster.ecs_cluster.id
   task_definition                   = aws_ecs_task_definition.ecs_task_definition.arn
-  desired_count                     = 0
+  desired_count                     = 2
   enable_execute_command            = true # ECS Execを有効化
   health_check_grace_period_seconds = 60
   launch_type                       = "FARGATE"
