@@ -4,6 +4,6 @@ variable "app_name" {
 }
 
 variable "secrets" {
-  type        = map(string)
+  type        = list(string)
   description = "The names of the secret"
 }
