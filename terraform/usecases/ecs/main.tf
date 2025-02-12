@@ -170,7 +170,8 @@ data "aws_iam_policy_document" "ecs_task_execution" {
       "ssm:GetParameter",
     ]
     resources = [
-      for parameter in data.aws_ssm_parameters_by_path.ssm_parameters.parameters : parameter.arn
+      for parameter in data.aws_ssm_parameters_by_path.ssm_parameters.names :
+      "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:parameter/${parameter}"
     ]
   }
 }
