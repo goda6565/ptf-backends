@@ -10,15 +10,6 @@ data "aws_vpc" "this" {
   }
 }
 
-data "aws_subnets" "public" {
-  id = var.public_subnets
-}
-
-data "aws_subnets" "private" {
-  id = var.private_subnets
-}
-
-
 # セキュリティーグループの作成
 resource "aws_security_group" "alb" {
   name   = "${var.app_name}-alb"
@@ -70,7 +61,7 @@ resource "aws_lb" "alb" {
   internal           = false
   load_balancer_type = "application" # ALB
   security_groups    = [aws_security_group.alb.id]
-  subnets            = data.aws_subnets.public.ids
+  subnets            = var.public_subnets
 }
 
 resource "aws_lb_target_group" "alb_target_group" {
@@ -303,7 +294,7 @@ resource "aws_ecs_service" "ecs_service" {
     rollback = false
   }
   network_configuration {
-    subnets          = data.aws_subnets.private.ids
+    subnets          = var.private_subnets
     security_groups  = [aws_security_group.ecs_instance.id]
     assign_public_ip = false
   }
