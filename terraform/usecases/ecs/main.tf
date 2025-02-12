@@ -135,6 +135,10 @@ resource "aws_ecs_cluster_capacity_providers" "ecs_capacity_provider" {
 
 
 # タスク実行ロールを作成
+data "aws_caller_identity" "current" {}
+data "aws_region" "current" {}
+
+
 data "aws_ssm_parameters_by_path" "ssm_parameters" {
   # SSMパラメーターストアからパラメーターを取得
   path            = "/${var.app_name}/"
@@ -237,8 +241,6 @@ resource "aws_iam_role_policy" "ecs_task_inline_policy" {
 
 
 # ECSタスク定義を作成
-data "aws_region" "current" {}
-
 data "aws_ecr_repository" "ecr_repository" {
   name = var.app_name
 }
