@@ -34,5 +34,5 @@ jobs:
           version: ${{ matrix.golangci-lint-version }}
           args: --timeout=5m
           
-      - name: Go Test -> Summary
-        uses: dmatryx/go-test-summary@v1.1
+      - name: Test
+        uses: robherley/go-test-action@v0
