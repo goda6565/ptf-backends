@@ -6,6 +6,11 @@ on:
       - 'applications/auth'
       - '.github/workflows/go-ci.yaml'
 
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
