@@ -1,0 +1,49 @@
+openapi: 3.1.1
+info:
+  title: Go auth API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api
+  - url: http://0.0.0.0:8080/api
+  - url: http://127.0.0.1:8080/api
+paths:
+  /auth/register:
+    post:
+      summary: ユーザー登録
+      operationId: userRegister
+      requestBody:
+        required: true
+      responses:
+        '200':
+        '400':
+        '500':
+  /auth/login:
+    post:
+      summary: ログイン
+      operationId: userLogin
+      requestBody:
+        required: true
+      responses:
+        '200':
+        '400':
+        '401':
+        '500':
+  /auth/user:
+    get:
+      summary: トークンを検証してユーザー情報を取得
+      operationId: getUser
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+        '400':
+        '401':
+        '500':
+
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
