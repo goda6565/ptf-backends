@@ -34,5 +34,5 @@ jobs:
           version: ${{ matrix.golangci-lint-version }}
           args: --timeout=5m
           
-      - name: Run tests
-        run: go test -v ./...
+      - name: Go Test -> Summary
+        uses: dmatryx/go-test-summary@v1.1
