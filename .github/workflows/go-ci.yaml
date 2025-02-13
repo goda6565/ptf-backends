@@ -8,7 +8,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -31,6 +30,7 @@ jobs:
       - name: Run linter
         uses: golangci/golangci-lint-action@v6
         with:
+          working-directory: applications/auth
           version: ${{ matrix.golangci-lint-version }}
           args: --timeout=5m
           
