@@ -51,4 +51,4 @@ jobs:
         with:
           name: Go Test Results
           path: report.xml
-          reporter: github-pr-review
+          reporter: jest-junit 
