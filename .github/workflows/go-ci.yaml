@@ -3,7 +3,7 @@ name: "Go CI"
 on:
   push:
     paths:
-      - 'applications/auth'
+      - 'applications/auth/**'
       - '.github/workflows/go-ci.yaml'
 
 permissions:
