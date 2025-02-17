@@ -3,4 +3,5 @@ generate:
   gin-server: true
   models: true
   client: true
-output: api/api.gen.go
+  embedded-spec: true
+output: ui/gen/api.go

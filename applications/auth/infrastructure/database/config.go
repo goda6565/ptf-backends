@@ -1,4 +1,4 @@
-package db
+package database
 
 import (
 	"github.com/goda6565/ptf-backends/applications/auth/pkg/utils"

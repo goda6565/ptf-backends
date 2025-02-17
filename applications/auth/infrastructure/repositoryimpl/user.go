@@ -1,4 +1,4 @@
-package repository
+package repositoryimpl
 
 import (
 	"gorm.io/gorm"
@@ -15,7 +15,11 @@ func NewUserRepository(db *gorm.DB) repository.UserRepository {
 	return &UserRepository{db}
 }
 
-func (r *UserRepository) CreateUser(user *models.User) (*models.User, error) {
+func (r *UserRepository) CreateUser(email string, password string) (*models.User, error) {
+	user := &models.User{
+		Email:    email,
+		Password: password,
+	}
 	tx := r.db.Create(user)
 	if tx.Error != nil {
 		return nil, tx.Error

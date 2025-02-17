@@ -5,6 +5,6 @@ import (
 )
 
 type UserRepository interface {
-	CreateUser(user *models.User) (*models.User, error)
+	CreateUser(email string, password string) (*models.User, error)
 	GetUserByEmail(email string) (*models.User, error)
 }

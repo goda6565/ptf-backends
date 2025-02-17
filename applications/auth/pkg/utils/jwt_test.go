@@ -24,10 +24,10 @@ func TestGenerateAndValidateToken(t *testing.T) {
 	setupEnv(t)
 
 	userID := uint(1)
-	username := "Alice"
+	email := "Alice"
 
 	// トークン生成
-	tokenString, err := GenerateSignedString(userID, username)
+	tokenString, err := GenerateSignedString(userID, email)
 	assert.NoError(t, err, "GenerateSignedString should not return error")
 	assert.NotEmpty(t, tokenString, "Token string should not be empty")
 
@@ -35,17 +35,17 @@ func TestGenerateAndValidateToken(t *testing.T) {
 	claims, err := ValidateToken(tokenString)
 	assert.NoError(t, err, "ValidateToken should not return error")
 	assert.Equal(t, int(userID), claims.ID, "User ID should match")
-	assert.Equal(t, username, claims.Username, "Username should match")
+	assert.Equal(t, email, claims.Email, "email should match")
 }
 
 func TestValidateToken_InvalidSignature(t *testing.T) {
 	setupEnv(t)
 
 	userID := uint(2)
-	username := "Bob"
+	email := "Bob"
 
 	// 正しいシークレットでトークン生成
-	tokenString, err := GenerateSignedString(userID, username)
+	tokenString, err := GenerateSignedString(userID, email)
 	assert.NoError(t, err, "GenerateSignedString should not return error")
 
 	// シークレットキーを変更して、署名エラーを発生させる
@@ -63,8 +63,8 @@ func TestValidateToken_Expired(t *testing.T) {
 	// 有効期限が過去のトークンを手動で作成
 	expiredTime := time.Now().Add(-time.Hour)
 	claims := MyJWTClaims{
-		ID:       "3",
-		Username: "Charlie",
+		ID:    "3",
+		Email: "Charlie",
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expiredTime),
 			Issuer:    "ptf-auth-service",

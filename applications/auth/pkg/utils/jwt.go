@@ -11,8 +11,8 @@ import (
 )
 
 type MyJWTClaims struct {
-	ID       string `json:"id"`
-	Username string `json:"username"`
+	ID    string `json:"id"`
+	Email string `json:"email"`
 	jwt.RegisteredClaims
 }
 
@@ -20,10 +20,10 @@ func getJWTSecret() []byte {
 	return []byte(os.Getenv("JWT_SECRET_KEY"))
 }
 
-func GenerateSignedString(userId uint, username string) (string, error) {
+func GenerateSignedString(userId uint, email string) (string, error) {
 	claims := MyJWTClaims{
-		ID:       strconv.Itoa(int(userId)),
-		Username: username,
+		ID:    strconv.Itoa(int(userId)),
+		Email: email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Issuer:    "ptf-auth-service",
 			Subject:   strconv.Itoa(int(userId)),
@@ -35,8 +35,8 @@ func GenerateSignedString(userId uint, username string) (string, error) {
 }
 
 type TokenClaims struct {
-	ID       int
-	Username string
+	ID    int
+	Email string
 }
 
 func ValidateToken(signedToken string) (*TokenClaims, error) {
@@ -69,7 +69,7 @@ func ValidateToken(signedToken string) (*TokenClaims, error) {
 	}
 
 	return &TokenClaims{
-		ID:       id,
-		Username: claims.Username,
+		ID:    id,
+		Email: claims.Email,
 	}, nil
 }

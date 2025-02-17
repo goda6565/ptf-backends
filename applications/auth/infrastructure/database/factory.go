@@ -1,8 +1,10 @@
-package db
+package database
 
 import (
 	"errors"
 	"fmt"
+
+	"github.com/goda6565/ptf-backends/applications/auth/infrastructure/database/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/driver/sqlite"
@@ -38,4 +40,10 @@ func NewDBInstance(instance int) (db *gorm.DB, err error) {
 		return nil, errInvalidDBInstance
 	}
 	return db, err
+}
+
+func NewDomains() []interface{} {
+	return []interface{}{
+		&models.User{},
+	}
 }
