@@ -1,0 +1,152 @@
+openapi: 3.0.3
+info:
+  title: Go auth API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/api/v1
+  - url: http://0.0.0.0:8080/api/v1
+  - url: http://127.0.0.1:8080/api/v1
+paths:
+  /auth/register:
+    post:
+      summary: ユーザー登録
+      operationId: userRegister
+      requestBody:
+        $ref: '#/components/requestBodies/UserRegisterRequestBody'
+        required: true
+      responses:
+        '201':
+          $ref: '#/components/responses/RegisterResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/login:
+    post:
+      summary: ログイン
+      operationId: userLogin
+      requestBody:
+        $ref: '#/components/requestBodies/UserLoginRequestBody'
+        required: true
+      responses:
+        '200':
+          $ref: '#/components/responses/LoginResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+  /auth/user:
+    get:
+      summary: トークンを検証してユーザー情報を返す
+      operationId: getUser
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          $ref: '#/components/responses/UserResponse'
+        '400':
+          $ref: '#/components/responses/ErrorResponse'
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '500':
+          $ref: '#/components/responses/ErrorResponse'
+
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    UserRegisterRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+    UserLoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+        password:
+          type: string
+      required:
+        - email
+        - password
+  requestBodies:
+    UserRegisterRequestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserRegisterRequest'
+    UserLoginRequestBody:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/UserLoginRequest'
+  responses:
+    RegisterResponse:
+      description: ユーザー登録成功
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              email:
+                type: string
+            required:
+              - id
+              - email
+    LoginResponse:
+      description: ログイン成功
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              token:
+                type: string
+            required:
+              - token
+    UserResponse:
+      description: ユーザー情報
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: integer
+              email:
+                type: string
+              created_at:
+                type: string
+                format: date-time
+            required:
+              - id
+              - email
+              - created_at
+    ErrorResponse:
+      description: エラーレスポンス
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              code:
+                type: integer
+            required:
+              - message
+              - code
