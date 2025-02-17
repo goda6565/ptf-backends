@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 	"strings"
 
@@ -73,7 +72,6 @@ func (h *UserHandler) UserLogin(c *gin.Context) {
 }
 
 func (h *UserHandler) GetUser(c *gin.Context) {
-	fmt.Println(c.Request.Context().Value("extraInfo"))
 	authHeader := c.GetHeader("Authorization")
 	if authHeader == "" {
 		c.JSON(http.StatusBadRequest, api.ErrorResponse{Message: "token is required", Code: http.StatusBadRequest})

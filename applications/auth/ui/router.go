@@ -4,10 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"time"
-	"fmt"
 
-	"github.com/getkin/kin-openapi/openapi3filter"
 	"github.com/getkin/kin-openapi/openapi3"
+	"github.com/getkin/kin-openapi/openapi3filter"
 	"github.com/gin-gonic/gin"
 	ginMiddleware "github.com/oapi-codegen/gin-middleware"
 	swaggerfiles "github.com/swaggo/files"
@@ -71,29 +70,16 @@ func NewGinRouter(db *gorm.DB, corsAllowOrigins []string) (*gin.Engine, error) {
 	// health check
 	router.GET("/health", handler.Health)
 
-	
 	apiGroup := router.Group("/api")
 	{
 		apiGroup.Use(middleware.TimeoutMiddleware(10 * time.Second))
 		v1 := apiGroup.Group("/v1")
 		{
 			// OapiRequestValidatorWithOptions を利用して、認証関数付きのバリデーションミドルウェアを作成
+			// TODO: 認証関数を実装する（ミドルウェアで認証を完了してユーザ情報を取得）
 			v1.Use(ginMiddleware.OapiRequestValidatorWithOptions(swagger, &ginMiddleware.Options{
 				Options: openapi3filter.Options{
 					AuthenticationFunc: func(c context.Context, input *openapi3filter.AuthenticationInput) error {
-						bearer := input.RequestValidationInput.Request.Header.Get("Authorization")
-						if bearer == "" {
-							logger.Error("Authorization header is required")
-							return fmt.Errorf("Authorization header is required")
-						}
-						token := bearer[len("Bearer "):]
-						claims, err := utils.ValidateToken(token)
-						if err != nil {
-							logger.Error(err.Error())
-							return err
-						}
-						ctx := context.WithValue(c, "extraInfo", claims.Email)
-						input.RequestValidationInput.Request = input.RequestValidationInput.Request.WithContext(ctx)
 						return nil
 					},
 				},
